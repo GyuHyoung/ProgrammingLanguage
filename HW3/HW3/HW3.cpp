@@ -183,6 +183,14 @@ TreeNode* addNode(int start, int end) {
 
 }
 
+void substitute(vector<pair<int, int>> param_list, int keyIdx) {
+	vector<string> tmp;
+	tmp = defun_list[keyIdx].expression;
+	for (int i = 0; i < param_list.size(); i++) {
+
+	}
+}
+
 //IF, MINUS, (, ) 제외 다른게 있는지 확인. 있으면 치환. inputindex늘려줘야함
 void func(vector<string> input) {
 	for (int i = 0; i < input.size(); i++) {
@@ -227,7 +235,7 @@ void func(vector<string> input) {
 				}
 			}
 			//치환하기(i-1부터 계산한 마지막 인덱스 + 1)
-			substitute();
+			substitute(vector<pair<int,int>> param_list, int keyIdx);
 			//i 증가? j 증가?
 		}
 	}
