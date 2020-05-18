@@ -183,17 +183,47 @@ TreeNode* addNode(int start, int end) {
 
 }
 
-void substitute(vector<pair<int, int>> param_list, int keyIdx) {
+vector<string> substitute( vector<pair<int, int>> param_list, int idx) {
+	
 	vector<string> tmp;
-	tmp = defun_list[keyIdx].expression;
-	for (int i = 0; i < param_list.size(); i++) {
+	string cur = "";
+	vector<string> change;
+	tmp = defun_list[idx].expression;
 
+	for (int i = 0; i < defun_list[idx].param.size(); i++) {
+		
+		cur = defun_list[idx].param[i];
+		change.resize(param_list[i].second - param_list[i].first + 1);
+		
+		//change.assign(input.begin() + param_list[i].first, input.end() + param_list[i].second);
+		//copy(input[param_list[i].first], input[param_list[i].second], change.begin());
+		
+		copy(input.begin() + param_list[i].first, input.begin() + param_list[i].second+1, change.begin());
+		
+		
+		for (int j = 0; j < defun_list[idx].expression.size(); j++) {
+			//defun struct의 param과 tmp[j] 위치가 같을때 (매개변수 위치 찾음)
+			if (cur == tmp[j]) {
+				int a = j;
+				tmp.erase(tmp.begin() + j);
+				for (int k = param_list[i].first; k <= param_list[i].second; k++) {
+					tmp.insert(tmp.begin() + a, input[k]);
+					a++;
+				}
+				
+			}
+
+		}
 	}
+
+	return tmp;
 }
 
 //IF, MINUS, (, ) 제외 다른게 있는지 확인. 있으면 치환. inputindex늘려줘야함
-void func(vector<string> input) {
+void func() {
+
 	for (int i = 0; i < input.size(); i++) {
+	
 		if (input[i] == "(" || input[i] == ")") {
 			continue;
 		}
@@ -207,16 +237,19 @@ void func(vector<string> input) {
 			//i는 ADD의 위치
 			int keyIdx = findKeyword(input[i]);
 			vector<pair<int, int>> param_list;
-
+			
+			int opencnt = 0, closecnt = 0;
+			int startIdx = -1, endIdx = -1; 
+			int flag = 0;
 			for (int j = i + 1; j < input.size(); j++) {
-				int opencnt = 0, closecnt = 0;
-				int startIdx = -1, endIdx = -1;
-
-				if (isInt(input[j]) == true) {
+				
+				if (isInt(input[j]) == true && flag == 0) {
 					param_list.push_back(make_pair(j, j));
+					continue;
 				}
 				else {
 					if (input[j] == "(") {
+						flag = 1;
 						if (startIdx == -1) {
 							startIdx = j;
 						}
@@ -230,12 +263,26 @@ void func(vector<string> input) {
 							param_list.push_back(make_pair(startIdx, endIdx));
 							startIdx = -1;
 							endIdx = -1;
+							flag = 0;
 						}
 					}
 				}
 			}
 			//치환하기(i-1부터 계산한 마지막 인덱스 + 1)
-			substitute(vector<pair<int,int>> param_list, int keyIdx);
+			vector<string> tmp = substitute(param_list, keyIdx);
+			//input의 i -1 부터 param_list[param_list.size()-1].second + 1 까지를
+			int a = i - 1;
+			for (int j = i - 1; j <= param_list[param_list.size() - 1].second + 1; j++) {
+				input.erase(input.begin() + a);
+			}
+			cout << input.size() << endl;
+			for (int j = 0; j < tmp.size(); j++){
+				input.insert(input.begin() + a, tmp[j]);
+				a++;
+				i++;
+			}
+			cout << input.size() << endl;
+		 
 			//i 증가? j 증가?
 		}
 	}
@@ -294,7 +341,7 @@ void operate(char line[]) {
 	//parsing
 	parse(line);
 
-	func(input);
+	func();
 
 	//make tree
 	Root = addNode(0, input.size() - 1);
