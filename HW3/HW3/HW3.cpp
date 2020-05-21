@@ -58,7 +58,6 @@ int findKeyword(string str) {
 
 void error_check_num(string check) {
 	for (int i = 0; i < check.length(); i++) {
-		//숫자 에러
 		if (check[i] < '0' || check[i] > '9') {
 			if (i == 0 && check[i] == '-') {
 				continue;
@@ -211,6 +210,7 @@ vector<string> substitute( vector<pair<int, int>> param_list, int idx) {
 			if (cur == tmp[j]) {
 				int a = j;
 				tmp.erase(tmp.begin() + j);
+				//tmp[j] 위치에 input[param[i].first] 부터 input[param[i].second] 까지 삽입
 				for (int k = param_list[i].first; k <= param_list[i].second; k++) {
 					tmp.insert(tmp.begin() + a, input[k]);
 					a++;
@@ -292,11 +292,12 @@ int func() {
 				cout << "매개변수 개수가 잘못되었습니다" << endl;
 				return 777;
 			}
-			vector<string> tmp = substitute(param_list, keyIdx);
 			/* input의 i -1 ~ param_list[param_list.size()-1].second + 1 까지 
 			 * (ex : (ADD 4 5) 부분에서 '(', ')' 위치)
 			 * 치환하기(i-1부터 계산한 마지막 인덱스 + 1) 
 			 */
+			vector<string> tmp = substitute(param_list, keyIdx);
+
 			int a = i - 1;
 			for (int j = i - 1; j <= param_list[param_list.size() - 1].second + 1; j++) {
 				input.erase(input.begin() + a);
@@ -396,6 +397,7 @@ void operate(char line[]) {
 		cout << input[i] << " ";
 	}
 	cout << endl;
+
 	//make tree
 	Root = addNode(0, input.size() - 1);
 
@@ -500,10 +502,6 @@ void defineDefun() {
 			for (int j = idx+2; j <= i; j++) {
 				if (line[j] == ' ' || line[j] == ')') {
 					if (param != "") {
-						//if (isInt(param) == true) {
-						//	cout << "매개변수 위치에 숫자가 입력되었습니다" << endl;
-						//	return;
-						//}
 						newDefun->param.push_back(param);
 						param = "";
 					}
@@ -567,15 +565,17 @@ void command() {
 	cout << "메뉴를 선택하세요 >> ";
 	cin >> exe;
 
+	while (getchar() != '\n');
+
 	switch (exe) {
 
 	case 1:
-		//define defun(O)
+		//define defun
 		defineDefun();
 		break;
 
 	case 2:
-		//print defun(O)
+		//print defun
 		printDefun();
 		break;
 
@@ -585,7 +585,7 @@ void command() {
 		break;
 
 	case 4:
-		//exit(O)
+		//exit
 		cout << "프로그램을 종료합니다." << endl;
 		exit(0);
 		break;
