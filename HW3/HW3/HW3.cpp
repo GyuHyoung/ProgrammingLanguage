@@ -86,7 +86,7 @@ string calculate(string op, string a, string b) {
 		return to_string((a1 - b1));
 	}
 	else if (op[0] == 'I') {
-		if (a1) {
+		if (a1 > 0) {
 			return to_string(b1);
 		}
 		else {
@@ -95,7 +95,7 @@ string calculate(string op, string a, string b) {
 	}
 }
 
-void postorder(TreeNode* ptr)
+int postorder(TreeNode* ptr)
 {  //후위 트리 순회
 	if (ptr) {
 
@@ -104,6 +104,13 @@ void postorder(TreeNode* ptr)
 		st.push(ptr->node);
 		cout << st.top() << " ";
 		if (ptr->node == "MINUS" || ptr->node == "IF") {
+			if (st.size() < 3) {
+				cout << "수식이 잘못되었습니다" << endl;
+				while (false == st.empty()){
+					st.pop();
+				}
+				return 777;
+			}
 			string op = st.top();
 			st.pop();
 			string b = st.top();
@@ -219,7 +226,8 @@ vector<string> substitute( vector<pair<int, int>> param_list, int idx) {
 }
 
 //IF, MINUS, (, ) 제외 다른게 있는지 확인. 있으면 치환. inputindex늘려줘야함
-void func() {
+int func() {
+	int flag = 0;
 
 	for (int i = 0; i < input.size(); i++) {
 	
@@ -233,8 +241,13 @@ void func() {
 			continue;
 		}
 		else {
+			flag = 1;
 			//i는 ADD의 위치
 			int keyIdx = findKeyword(input[i]);
+			if (keyIdx == 777) {
+				cout << "존재하지 않는 함수명 입니다" << endl;
+				return 777;
+			}
 			vector<pair<int, int>> param_list;
 			
 			int opencnt = 0, closecnt = 0;
@@ -275,7 +288,10 @@ void func() {
 					}
 				}
 			}
-
+			if (param_list.size() != defun_list[keyIdx].param.size()) {
+				cout << "매개변수 개수가 잘못되었습니다" << endl;
+				return 777;
+			}
 			vector<string> tmp = substitute(param_list, keyIdx);
 			/* input의 i -1 ~ param_list[param_list.size()-1].second + 1 까지 
 			 * (ex : (ADD 4 5) 부분에서 '(', ')' 위치)
@@ -294,6 +310,8 @@ void func() {
 			}
 			}
 	}
+
+	return flag;
 }
 
 void parse(char line[]) {
@@ -353,17 +371,6 @@ void operate(char line[]) {
 		cout << input[i] << " ";
 	}
 
-	cout << " -> ";
-
-	func();
-
-	for (int i = 0; i < input.size(); i++) {
-		cout << input[i] << " ";
-	}
-	cout << endl;
-	//make tree
-	Root = addNode(0, input.size() - 1);
-
 	//error code 
 	if (input.size() == 1) {
 		if (isInt(input[0])) {
@@ -375,6 +382,24 @@ void operate(char line[]) {
 			return;
 		}
 	}
+
+	cout << " -> ";
+
+	do {
+		func();
+		if (func() == 777) {
+			return;
+		}
+	} while (func() == 1);
+
+	for (int i = 0; i < input.size(); i++) {
+		cout << input[i] << " ";
+	}
+	cout << endl;
+	//make tree
+	Root = addNode(0, input.size() - 1);
+
+	
 	if (error_msg.size() > 0) {
 		for (int i = 0; i < error_msg.size(); i++) {
 			cout << error_message[error_msg[i]] << endl;
@@ -383,8 +408,10 @@ void operate(char line[]) {
 	}
 	//postorder
 	cout << "Prefix to Postfix : ";
-	postorder(Root);
-
+	int res = postorder(Root);
+	if (res == 777) {
+		return;
+	}
 	//stack
 	cout << "\nresult : " << st.top() << endl;
 	st.pop();
