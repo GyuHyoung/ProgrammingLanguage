@@ -4,7 +4,7 @@
 #include <vector>
 #include <stack>
 #include <malloc.h>
-#include <regex>
+
 using namespace std;
 
 vector<string> input;
@@ -102,6 +102,7 @@ void postorder(TreeNode* ptr)
 		postorder(ptr->LNode);
 		postorder(ptr->RNode);
 		st.push(ptr->node);
+		cout << st.top() << " ";
 		if (ptr->node == "MINUS" || ptr->node == "IF") {
 			string op = st.top();
 			st.pop();
@@ -195,13 +196,10 @@ vector<string> substitute( vector<pair<int, int>> param_list, int idx) {
 		cur = defun_list[idx].param[i];
 		change.resize(param_list[i].second - param_list[i].first + 1);
 		
-		//change.assign(input.begin() + param_list[i].first, input.end() + param_list[i].second);
-		//copy(input[param_list[i].first], input[param_list[i].second], change.begin());
-		
 		copy(input.begin() + param_list[i].first, input.begin() + param_list[i].second+1, change.begin());
 		
-		
-		for (int j = 0; j < defun_list[idx].expression.size(); j++) {
+
+		for (int j = 0; j < tmp.size(); j++) {
 			//defun struct의 param과 tmp[j] 위치가 같을때 (매개변수 위치 찾음)
 			if (cur == tmp[j]) {
 				int a = j;
@@ -209,8 +207,9 @@ vector<string> substitute( vector<pair<int, int>> param_list, int idx) {
 				for (int k = param_list[i].first; k <= param_list[i].second; k++) {
 					tmp.insert(tmp.begin() + a, input[k]);
 					a++;
+					j++;
 				}
-				
+
 			}
 
 		}
@@ -245,7 +244,12 @@ void func() {
 				
 				if (isInt(input[j]) == true && flag == 0) {
 					param_list.push_back(make_pair(j, j));
-					continue;
+					if (param_list.size() == defun_list[keyIdx].param.size()) {
+						break;
+					}
+					else {
+						continue;
+					}
 				}
 				else {
 					if (input[j] == "(") {
@@ -264,27 +268,31 @@ void func() {
 							startIdx = -1;
 							endIdx = -1;
 							flag = 0;
+							if (param_list.size() == defun_list[keyIdx].param.size()) {
+								break;
+							}
 						}
 					}
 				}
 			}
-			//치환하기(i-1부터 계산한 마지막 인덱스 + 1)
+
 			vector<string> tmp = substitute(param_list, keyIdx);
-			//input의 i -1 부터 param_list[param_list.size()-1].second + 1 까지를
+			/* input의 i -1 ~ param_list[param_list.size()-1].second + 1 까지 
+			 * (ex : (ADD 4 5) 부분에서 '(', ')' 위치)
+			 * 치환하기(i-1부터 계산한 마지막 인덱스 + 1) 
+			 */
 			int a = i - 1;
 			for (int j = i - 1; j <= param_list[param_list.size() - 1].second + 1; j++) {
 				input.erase(input.begin() + a);
 			}
-			cout << input.size() << endl;
+			//cout << input.size() << endl;
+
 			for (int j = 0; j < tmp.size(); j++){
 				input.insert(input.begin() + a, tmp[j]);
 				a++;
 				i++;
 			}
-			cout << input.size() << endl;
-		 
-			//i 증가? j 증가?
-		}
+			}
 	}
 }
 
@@ -341,8 +349,18 @@ void operate(char line[]) {
 	//parsing
 	parse(line);
 
+	for (int i = 0; i < input.size(); i++) {
+		cout << input[i] << " ";
+	}
+
+	cout << " -> ";
+
 	func();
 
+	for (int i = 0; i < input.size(); i++) {
+		cout << input[i] << " ";
+	}
+	cout << endl;
 	//make tree
 	Root = addNode(0, input.size() - 1);
 
@@ -364,10 +382,11 @@ void operate(char line[]) {
 		return;
 	}
 	//postorder
+	cout << "Prefix to Postfix : ";
 	postorder(Root);
 
 	//stack
-	cout << "결과 : " << st.top() << endl;
+	cout << "\nresult : " << st.top() << endl;
 	st.pop();
 	return;
 
@@ -386,6 +405,7 @@ void interpreter() {
 
 	if (ifile.is_open()) {
 		while (ifile.getline(line, sizeof(line))) {
+			cout << "\n***********************************************\n" << endl;
 			operate(line);
 		}
 	}
@@ -430,8 +450,10 @@ void defineDefun() {
 	int a = getchar();
 	getline(cin, line);
 	
-	//엔터 누르면
-	//(구현) line이 길이 6보다 작을때
+	if (line.size() < 6 || line.find("DEFUN") == string::npos) {
+		cout << "DEFUN을 포함하여 입력해 주세요. \n예 : DEFUN POS (v4) (IF v4 1)" << endl;
+		return;
+	}
 	line = line.substr(6, line.size()-1);
 	string tmp;
 	int idx = 0;
@@ -446,12 +468,15 @@ void defineDefun() {
 		}
 		
 		//매개변수 저장
-		//(구현) 매개변수 아무것도 없는지 검사
 		if (idx != 0 && line[i] == ')') {
 			string param = "";
 			for (int j = idx+2; j <= i; j++) {
 				if (line[j] == ' ' || line[j] == ')') {
 					if (param != "") {
+						//if (isInt(param) == true) {
+						//	cout << "매개변수 위치에 숫자가 입력되었습니다" << endl;
+						//	return;
+						//}
 						newDefun->param.push_back(param);
 						param = "";
 					}
@@ -469,13 +494,18 @@ void defineDefun() {
 	}
 
 	//수식 저장
-	//(구현) 길이가 idx보다 길어야만 substr 가능
+	//길이가 idx보다 길어야만 substr 가능
+	if (line.size() < idx) {
+		cout << "수식이 잘못 되었습니다" << endl;
+		return;
+	}
+
 	line = line.substr(idx, line.size() - 1);
 	int len = line.length() + 1;
 	char* cstr = new char[len];
-	//for (int i = 0; i < line.length(); i++) {
-	//	cstr[i] = line[i];
-	//}
+
+
+
 	strcpy(cstr, line.c_str());
 
 	parse(cstr);
@@ -486,32 +516,27 @@ void defineDefun() {
 
 
 	//이미 있는 함수인지 검사
-	int error_exist = 0;
 	for (int i = 0; i < defun_list.size(); i++) {
 		if (newDefun->keyword == defun_list[i].keyword) {
 			cout << "이미 존재하는 함수 입니다." << endl;
-			error_exist = 1;
-			//(구현) 에러 "이미 존재하는 함수 입니다."
+			return;
 		}
 	}
 
-	//에러 없으면
 	//정의된 defun list에 저장
-	if (error_exist == 0) {
-		defun_list.push_back(*newDefun);
-	}
-
+	defun_list.push_back(*newDefun);
+	
 }
 
 void command() {
 
 	int exe;
-	cout << "=========================" << endl;
+	cout << "===============================================" << endl;
 	cout << "1. Define DEFUN" << endl;
 	cout << "2. Print DEFUN" << endl;
 	cout << "3. Interpreter" << endl;
 	cout << "4. Exit" << endl;
-	cout << "=========================" << endl;
+	cout << "===============================================" << endl;
 	cout << "메뉴를 선택하세요 >> ";
 	cin >> exe;
 
@@ -537,6 +562,7 @@ void command() {
 		cout << "프로그램을 종료합니다." << endl;
 		exit(0);
 		break;
+
 	default:
 		cout << "다시 입력해주세요." << endl;
 	}

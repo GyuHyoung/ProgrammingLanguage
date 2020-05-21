@@ -2,19 +2,22 @@
 C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(37,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
 C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(50,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
 C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(60,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(193,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(204,21): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(225,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(244,26): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(279,22): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(361,21): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(407,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(412,21): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(417,21): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(439,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(482,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(490,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(479,1): warning C4996:  'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(194,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(202,21): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(224,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(243,26): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(290,22): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(352,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(360,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(379,21): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(427,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(432,21): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(437,21): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(461,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(498,18): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(512,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(519,20): warning C4018:  '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(509,1): warning C4996:  'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\ucrt\string.h(133): message :  'strcpy' 선언을 참조하십시오.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\ucrt\string.h(133): message : C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\HW3\HW3.cpp(96) : warning C4715: 'calculate': 모든 제어 경로에서 값을 반환하지는 않습니다.
   HW3.vcxproj -> C:\Users\do0ob\source\repos\ProgrammingLanguage\HW3\Debug\HW3.exe
