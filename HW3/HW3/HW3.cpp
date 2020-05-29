@@ -12,12 +12,14 @@ stack<string> st;
 vector<int> error_msg;
 vector<struct defun> defun_list;
 
+//defun 자료구조를 저장할 struct
 typedef struct defun {
-	string keyword;
-	vector<string> param;
-	vector<string> expression;
+	string keyword;				//함수명
+	vector<string> param;		//매개변수 리스트
+	vector<string> expression; //수식
 }defun;
 
+//이진트리를 위한 struct
 typedef struct TreeNode {
 	string node;
 	TreeNode* LNode;
@@ -31,6 +33,7 @@ string error_message[5] = { "- 기호가 여러개 존재합니다.",
 							"(의 위치가 잘못되었습니다.",
 							")의 위치가 잘못되었습니다." };
 
+//정수형인지 아닌지 판별
 bool isInt(string str) {
 	char value;
 	bool ret = true;
@@ -45,6 +48,7 @@ bool isInt(string str) {
 	return ret;
 }
 
+//defun list에서 str과 일치하는 keyword가 존재하는지 검사
 int findKeyword(string str) {
 
 	for (int i = 0; i < defun_list.size(); i++) {
@@ -56,6 +60,7 @@ int findKeyword(string str) {
 	return 777;
 }
 
+//숫자인지 아닌지 판별
 void error_check_num(string check) {
 	for (int i = 0; i < check.length(); i++) {
 		if (check[i] < '0' || check[i] > '9') {
@@ -70,12 +75,14 @@ void error_check_num(string check) {
 	}
 }
 
+//문자열이 MINUS, IF 제외 다른게 있는지 확인
 void error_check_str(string check) {
 	if (check.compare("MINUS") != 0 && check.compare("IF") != 0) {
 		error_msg.push_back(2);
 	}
 }
 
+//IF, MINUS연산
 string calculate(string op, string a, string b) {
 
 	int a1 = stoi(a);
@@ -94,15 +101,21 @@ string calculate(string op, string a, string b) {
 	}
 }
 
+//후위 트리 순회
 int postorder(TreeNode* ptr)
-{  //후위 트리 순회
+{  
 	if (ptr) {
 
 		postorder(ptr->LNode);
 		postorder(ptr->RNode);
+		
+		//노드를 스택에 삽입
 		st.push(ptr->node);
+		
 		cout << st.top() << " ";
+		//MINUS, IF를 만나면 pop후, 연산 결과 push
 		if (ptr->node == "MINUS" || ptr->node == "IF") {
+			
 			if (st.size() < 3) {
 				cout << "수식이 잘못되었습니다" << endl;
 				while (false == st.empty()){
@@ -110,12 +123,14 @@ int postorder(TreeNode* ptr)
 				}
 				return 777;
 			}
+			
 			string op = st.top();
 			st.pop();
 			string b = st.top();
 			st.pop();
 			string a = st.top();
 			st.pop();
+			
 			string res = calculate(op, a, b);
 			st.push(res);
 		}
@@ -123,6 +138,7 @@ int postorder(TreeNode* ptr)
 	}
 }
 
+//노드 삽입 함수
 TreeNode* addNode(int start, int end) {
 
 	TreeNode* newNode = new TreeNode();
@@ -135,18 +151,20 @@ TreeNode* addNode(int start, int end) {
 			error_check_num(input[start]);
 		}
 
+
 		newNode->node = input[start];
 		newNode->LNode = NULL;
 		newNode->RNode = NULL;
 		return newNode;
 	}
+
 	//영어 체크
 	if (input[start + 1] != "(" && input[start + 1] != ")") {
 		error_check_str(input[start + 1]);
 	}
 	newNode->node = input[start + 1];
 
-
+	//재귀적으로 수행
 	if (end - start == 4) {
 		newNode->LNode = addNode(start + 2, start + 2);
 		newNode->RNode = addNode(start + 3, start + 3);
@@ -190,6 +208,7 @@ TreeNode* addNode(int start, int end) {
 
 }
 
+//input에서 MINUS, IF 제외한 함수 있을 경우, 그 함수의 expression으로 변환해준다
 vector<string> substitute( vector<pair<int, int>> param_list, int idx) {
 	
 	vector<string> tmp;
@@ -225,7 +244,7 @@ vector<string> substitute( vector<pair<int, int>> param_list, int idx) {
 	return tmp;
 }
 
-//IF, MINUS, (, ) 제외 다른게 있는지 확인. 있으면 치환. inputindex늘려줘야함
+//IF, MINUS, (, ) 제외 다른게 있는지 확인. 있으면 substitute(). 
 int func() {
 	int flag = 0;
 
@@ -242,12 +261,14 @@ int func() {
 		}
 		else {
 			flag = 1;
-			//i는 ADD의 위치
+			//함수 존재하는지 확인
 			int keyIdx = findKeyword(input[i]);
 			if (keyIdx == 777) {
 				cout << "존재하지 않는 함수명 입니다" << endl;
 				return 777;
 			}
+			
+			//param_list 만들기
 			vector<pair<int, int>> param_list;
 			
 			int opencnt = 0, closecnt = 0;
@@ -302,7 +323,6 @@ int func() {
 			for (int j = i - 1; j <= param_list[param_list.size() - 1].second + 1; j++) {
 				input.erase(input.begin() + a);
 			}
-			//cout << input.size() << endl;
 
 			for (int j = 0; j < tmp.size(); j++){
 				input.insert(input.begin() + a, tmp[j]);
@@ -315,6 +335,7 @@ int func() {
 	return flag;
 }
 
+//char[] 문자열을 나누어 string vector인 input에 삽입
 void parse(char line[]) {
 	string tmp = "";
 	int opencnt = 0, closecnt = 0;
@@ -359,6 +380,7 @@ void parse(char line[]) {
 	}
 }
 
+//연산 수행 총괄 함수
 void operate(char line[]) {
 	TreeNode* Root;
 
@@ -372,7 +394,7 @@ void operate(char line[]) {
 		cout << input[i] << " ";
 	}
 
-	//error code 
+	//한 단어만 입력했을 경우 
 	if (input.size() == 1) {
 		if (isInt(input[0])) {
 			cout << input[0] << endl;
@@ -386,6 +408,7 @@ void operate(char line[]) {
 
 	cout << " -> ";
 
+	//defun 함수 존재하면 바꾸어줌
 	do {
 		func();
 		if (func() == 777) {
@@ -393,6 +416,7 @@ void operate(char line[]) {
 		}
 	} while (func() == 1);
 
+	//결과 출력
 	for (int i = 0; i < input.size(); i++) {
 		cout << input[i] << " ";
 	}
@@ -401,26 +425,29 @@ void operate(char line[]) {
 	//make tree
 	Root = addNode(0, input.size() - 1);
 
-	
+	//에러사항이 존재하면, 에러메세지 출력 후 operate()함수 종료
 	if (error_msg.size() > 0) {
 		for (int i = 0; i < error_msg.size(); i++) {
 			cout << error_message[error_msg[i]] << endl;
 		}
 		return;
 	}
+
 	//postorder
 	cout << "Prefix to Postfix : ";
 	int res = postorder(Root);
 	if (res == 777) {
 		return;
 	}
-	//stack
+
+	//stack의 top 출력
 	cout << "\nresult : " << st.top() << endl;
 	st.pop();
 	return;
 
 }
 
+//interprete 모드
 void interpreter() {
 
 	ifstream ifile;
@@ -451,8 +478,8 @@ void interpreter() {
 	return;
 }
 
+//defun list 출력
 void printDefun() {
-	//defun list 출력
 	for (int i = 0; i < defun_list.size(); i++) {
 
 		cout << defun_list[i].keyword;
@@ -471,6 +498,8 @@ void printDefun() {
 
 
 }
+
+//defun 정의
 void defineDefun() {
 	//line으로 입력 받기
 	string line;
@@ -565,7 +594,6 @@ void command() {
 	cout << "메뉴를 선택하세요 >> ";
 	cin >> exe;
 
-	while (getchar() != '\n');
 
 	switch (exe) {
 
@@ -593,6 +621,7 @@ void command() {
 	default:
 		cout << "다시 입력해주세요." << endl;
 	}
+	//while (getchar() != '\n');
 
 	return;
 
