@@ -118,8 +118,6 @@ public class MyGUI extends JFrame
         			//검색하는 창
         			new SearchWindow(path, search);
         			
-
-        			//쓰레드 start 여기서??
         			
         		}
         		catch(MyException mye){

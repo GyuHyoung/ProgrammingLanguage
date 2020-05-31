@@ -24,11 +24,13 @@ public class SearchThread implements Runnable {
 		if (parentFile.isFile()) {
 			//조건 검사!!!!!!!!!!
 			//와일드 카드 구현
+			
 			subFiles.add(parentFile); 
 		} 
 		
 		else if (parentFile.isDirectory()) { 
 			subFiles.add(parentFile); 
+			System.out.println(parentFile);
 			
 			File[] childFiles = parentFile.listFiles(); 
 			
@@ -36,6 +38,15 @@ public class SearchThread implements Runnable {
 				findSubFiles(childFile, word, subFiles); 
 				} 
 			} 
+	}
+	
+	boolean wildcard(String word, String filename) {
+		boolean ret = true;
+		
+		
+		return ret;
+		
+		
 	}
 	
 }

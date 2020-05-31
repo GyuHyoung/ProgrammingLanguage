@@ -4,8 +4,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Vector;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -13,7 +15,7 @@ public class SearchWindow extends JFrame{
     
 	JPanel contentPanel,btnPanel;
 	JButton btn_remove,btn_cancel;
-    JTextArea content;
+    static JList<String> content;
    
     String path = new String();
     String search = new String();
@@ -28,7 +30,7 @@ public class SearchWindow extends JFrame{
         
         setLayout( new FlowLayout() );
         
-        content = new JTextArea(25, 30);
+        content = new JList();
 //        content.setSize(500,500);
         btn_remove = new JButton("파일삭제");
         btn_cancel = new JButton("검색취소");
@@ -48,7 +50,7 @@ public class SearchWindow extends JFrame{
         
         add(contentPanel);
         add(btnPanel);
-        setSize(500,500);
+        setSize(1000,1000);
         
         setResizable(false);
         setVisible(true);
@@ -65,11 +67,18 @@ public class SearchWindow extends JFrame{
 			File tmp;
 			int size = fileList.size();
 			System.out.println(size);
+			
+			DefaultListModel<String> listModel = new DefaultListModel<String>();
+			
 			for(int i = 0; i < size; i++) {
 				tmp = fileList.elementAt(i);
 				System.out.println(tmp);
-						
+				String text = tmp.toString();
+
+	            listModel.addElement(text);						
 			}
+			
+            content.setModel(listModel);
 		}
 			
 		
