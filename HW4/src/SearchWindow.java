@@ -2,6 +2,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -52,10 +53,27 @@ public class SearchWindow extends JFrame{
         setResizable(false);
         setVisible(true);
         
-        Thread t = new Thread(new SearchThread(path, search));
+        SearchThread st = new SearchThread(path, search);
+        Thread t = new Thread(st);
         
         t.start();
-    }
+        
+		}
+		
+		
+		public static void ThreadResult( Vector<File> fileList) {
+			File tmp;
+			int size = fileList.size();
+			System.out.println(size);
+			for(int i = 0; i < size; i++) {
+				tmp = fileList.elementAt(i);
+				System.out.println(tmp);
+						
+			}
+		}
+			
+		
+    
     
     
   //EVENT HANDER CLASS

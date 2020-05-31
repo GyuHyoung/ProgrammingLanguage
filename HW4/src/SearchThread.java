@@ -5,6 +5,7 @@ public class SearchThread implements Runnable {
 	String path = new String();
 	String word = new String();
 	File dir;
+	Vector<File> subfiles = new Vector<File>();
 	
 	public SearchThread(String path, String word){
 		this.path = path;
@@ -13,21 +14,16 @@ public class SearchThread implements Runnable {
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		try {
-			Vector<File> subfiles = new Vector<File>();
-			findSubFiles(dir, word, subfiles);
-			
-		}catch(InterruptedException ie) {
-			ie.printStackTrace();
-		}
+		findSubFiles(dir, word, subfiles);
+		
+		SearchWindow.ThreadResult(subfiles);
 	}
 
 	public static void findSubFiles(File parentFile, String word, Vector<File> subFiles) { 
 		
 		if (parentFile.isFile()) {
 			//조건 검사!!!!!!!!!!
-			
+			//와일드 카드 구현
 			subFiles.add(parentFile); 
 		} 
 		
@@ -41,4 +37,5 @@ public class SearchThread implements Runnable {
 				} 
 			} 
 	}
+	
 }
