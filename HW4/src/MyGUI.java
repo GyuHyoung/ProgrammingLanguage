@@ -116,7 +116,7 @@ public class MyGUI extends JFrame
         			findException(1, path);
         			findException(2, search);
         			//검색하는 창
-        			new SearchWindow(path, search);
+					new SearchWindow(path, search);
         			
         			
         		}
