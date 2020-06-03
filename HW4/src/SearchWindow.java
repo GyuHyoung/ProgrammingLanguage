@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -95,7 +96,7 @@ public class SearchWindow extends JFrame {
 
 		// "파일명", "파일크기", "파일수정일", "파일 위치"
 		m.insertRow(table.getModel().getRowCount(),
-				new Object[] { f.getName(), f.length(), f.lastModified(), f.getAbsolutePath() });
+				new Object[] { f.getName(), f.length(), new Date(f.lastModified()), f.getAbsolutePath() });
 
 		table.updateUI();
 	}
