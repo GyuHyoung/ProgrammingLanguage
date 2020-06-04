@@ -79,6 +79,7 @@ public class SearchWindow extends JFrame {
 
 		setVisible(true);
 
+		//쓰레드를 생성하여 검색을 한다 
 		SearchThread st = new SearchThread(path, search);
 		t = new Thread(st);
 
@@ -86,10 +87,12 @@ public class SearchWindow extends JFrame {
 
 	}
 
+	//현재 탐색 폴더명을 바꿔준다.
 	public static void changelabel(String str) {
 		curDirStr.setText(str);
 	}
 
+	//table에 파일 정보 한 줄 추가
 	public static void ThreadResult(File f) {
 
 		DefaultTableModel m = (DefaultTableModel) table.getModel();
@@ -126,7 +129,7 @@ public class SearchWindow extends JFrame {
 		}
 
 	}
-
+	//파일 삭제를 눌렀을 경우 실행되는 함수 
 	public synchronized void deletefile() {
 		try {
 			int row = table.getSelectedRow();
@@ -141,13 +144,17 @@ public class SearchWindow extends JFrame {
 				if (delFile.isDirectory()) {
 					System.out.println("파일삭제 실패 - 디렉토리");
 				}
+				//디렉토리가 아닐 때
 				if (delFile.delete()) {
-
+					
+					//table에서도 정보 업데이트
 					DefaultTableModel m = (DefaultTableModel) table.getModel();
 					m.removeRow(row);
 					System.out.println("파일삭제 성공");
 
-				} else {
+				}
+				//존재하지 않는 파일에 대한 예외처리
+				else {
 					System.out.println("파일이 존재하지 않습니다.");
 				}
 			}

@@ -14,7 +14,9 @@ public class MyGUI extends JFrame
     JPanel pathPanel,searchPanel,buttonPanel;
     JButton b1,b2;
     JTextArea content;
+   
     
+    //생성자로 화면 구성
     public MyGUI()
     {
     	super( "파일 검색 프로그램" );
@@ -45,6 +47,8 @@ public class MyGUI extends JFrame
 		
         b1.addActionListener(new EventHandler());
         
+        
+        //"종료" 버튼 누를 시, 프로그램이 종료된다.
         b2.addActionListener(new ActionListener() {
       	  public void actionPerformed(ActionEvent e) {
       		  System.exit(0);
@@ -59,13 +63,14 @@ public class MyGUI extends JFrame
        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
-    //EVENT HANDER CLASS
+    // 버튼 EVENT HANDER CLASS
     class EventHandler implements ActionListener{
     	
     	String path = new String();
     	String search = new String();
 
     	//FIND EXCEPTION METHOD
+    	//예외가 발생할 경우, MuException에서 예외 문구 출력
     	void findException(int flag, String str) throws MyException{
     		//아무것도 입력하지 않고 검색 버튼을 누를 경우
     		if(str.length() == 0) {
@@ -110,7 +115,7 @@ public class MyGUI extends JFrame
         		System.out.println(path);
         		System.out.println(search);
         		
-        		//예외처리
+        		//try-catch로 예외처리
         		try {
         			
         			findException(1, path);
